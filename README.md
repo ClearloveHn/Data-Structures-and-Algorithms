@@ -254,3 +254,46 @@ func swapPairs(head *ListNode) *ListNode {
     return dummy.Next
 }
 ```
+##  19.删除链表的倒数第N个节点  
+### 题目描述：
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。&emsp;输入：head = [1,2,3,4,5], n = 2 &emsp;输出：[1,2,3,5]
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.使用两个指针 fast 和 slow，初始时都指向链表的头节点。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.先让 fast 指针向前移动 N 个节点，如果在移动过程中 fast 指针为空，说明链表长度不足 N，直接返回头节点。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.然后让 fast 和 slow 指针同时向前移动，直到 fast 指针到达链表的末尾。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.此时 slow 指针指向的节点就是倒数第 N 个节点的前一个节点。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.将 slow 指针的 Next 指针指向 slow.Next.Next，即删除倒数第 N 个节点。
+### 代码实现
+```
+type ListNode struct {
+    Val int
+    Next *ListNode
+}
+
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+    // 创建一个哑节点，指向链表的头节点
+    dummy := &ListNode{Next: head}
+    fast, slow := dummy, dummy
+
+    // 先让 fast 指针向前移动 N 个节点
+    for i := 0; i < n; i++ {
+        fast = fast.Next
+    }
+
+    // 如果 fast 指针为空，说明链表长度不足 N
+    if fast == nil {
+        return head
+    }
+
+    // 让 fast 和 slow 指针同时向前移动，直到 fast 指针到达链表的末尾
+    for fast.Next != nil {
+        fast = fast.Next
+        slow = slow.Next
+    }
+
+    // 删除倒数第 N 个节点
+    slow.Next = slow.Next.Next
+
+    return dummy.Next
+}
+```
