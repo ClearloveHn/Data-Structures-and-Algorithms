@@ -219,4 +219,38 @@ func reverseList(head *ListNode) *ListNode {
 ### 题目描述：
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。输入：head = [1,2,3,4]&emsp;输出：[2,1,4,3]
 ### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.首先，我们需要一个哑节点（dummy node）作为头节点的前一个节点，以便处理头节点的交换。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.然后,我们使用一个指针 curr 初始指向哑节点。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.当 curr.Next 和 curr.Next.Next 都不为空时,进行以下步骤  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.保存 curr.Next 为 first,保存 curr.Next.Next 为 second,即需要交换的两个节点。。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2交换 first 和 second 的位置:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.1将 first.Next 指向 second.Next,即将第一个节点的下一个指针指向第二个节点的下一个节点。 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.2将 second.Next 指向 first,即将第二个节点的下一个指针指向第一个节点  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.3将 curr.Next 指向 second,即将当前节点的下一个指针指向交换后的第二个节点。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.更新指针：  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1将 curr 移动到 first,即移动到已交换的第一个节点上。  
+### 代码实现
+```
+type ListNode struct {
+    Val int
+    Next *ListNode
+}
 
+func swapPairs(head *ListNode) *ListNode {
+    dummy := &ListNode{Next: head}
+    curr := dummy
+
+    for curr.Next != nil && curr.Next.Next != nil {
+        first := curr.Next
+        second := curr.Next.Next
+
+        first.Next = second.Next
+        second.Next = first
+        curr.Next = second
+
+        curr = first
+    }
+
+    return dummy.Next
+}
+```
