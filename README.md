@@ -297,3 +297,52 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
     return dummy.Next
 }
 ```
+##  142.环形链表 II
+### 题目描述：
+给定一个链表的头节点  head ，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.使用快慢指针法,快指针每次移动两步,慢指针每次移动一步。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.如果链表中存在环,快慢指针一定会在环内相遇。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.当快慢指针相遇时,将其中一个指针移动到链表头部,另一个指针保持在相遇位置。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.两个指针同时以相同的速度移动,它们会在环的入口处相遇。  
+### 代码实现
+```
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func detectCycle(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {
+        return nil
+    }
+    
+    // 快慢指针
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+        
+        // 快慢指针相遇
+        if slow == fast {
+            // 将其中一个指针移动到链表头部
+            slow = head
+            
+            // 两个指针同时以相同的速度移动
+            for slow != fast {
+                slow = slow.Next
+                fast = fast.Next
+            }
+            
+            // 返回环的入口节点
+            return slow
+        }
+    }
+    
+    // 链表中不存在环
+    return nil
+}
+```
+
