@@ -345,4 +345,70 @@ func detectCycle(head *ListNode) *ListNode {
     return nil
 }
 ```
-
+##  242.有效的字母异位词
+### 题目描述：
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.首先，我们可以对字符串 s 和 t 进行长度判断，如果长度不相等，则直接返回 false，因为长度不同的字符串不可能是字母异位词。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.如果长度相等，我们可以使用哈希表（映射）来统计字符串 s 中每个字符出现的次数。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.然后，我们遍历字符串 t 中的每个字符，在哈希表中查找该字符并将其计数减一。如果发现某个字符在哈希表中不存在或计数已经为零，则说明 t 包含了 s 中没有的额外字符，返回 false。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.如果遍历完字符串 t 后，哈希表中所有字符的计数都为零，则说明 s 和 t 是字母异位词，返回 true。  
+### 代码实现
+```
+func isAnagram(s string, t string) bool {
+    // 如果两个字符串长度不相等，直接返回 false
+    if len(s) != len(t) {
+        return false
+    }
+    
+    // 创建一个哈希表来统计字符出现的次数
+    charCount := make(map[rune]int)
+    
+    // 遍历字符串 s，统计每个字符出现的次数
+    for _, char := range s {
+        charCount[char]++
+    }
+    
+    // 遍历字符串 t，在哈希表中查找并减少字符的计数
+    for _, char := range t {
+        count, exists := charCount[char]
+        if !exists || count == 0 {
+            return false
+        }
+        charCount[char]--
+    }
+    
+    // 如果遍历完 t 后，哈希表中所有字符的计数都为零，则返回 true
+    return true
+}
+```
+##  349.两个数组的交集
+### 题目描述：
+给定两个数组 nums1 和 nums2 ，返回它们的交集。输出结果中的每个元素一定是唯一 的。我们可以不考虑输出结果的顺序 。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.创建一个哈希表（map）来存储第一个数组 nums1 中的所有元素，以便快速查找。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.创建一个结果数组 result，用于存储两个数组的交集元素。     
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.遍历第二个数组 nums2 中的每个元素：如果当前元素在哈希表中存在，则将其添加到结果数组中，并从哈希表中删除该元素，确保交集中的元素唯一。  
+### 代码实现
+```
+func intersection(nums1 []int, nums2 []int) []int {
+    // 创建哈希表存储 nums1 中的元素
+    set := make(map[int]bool)
+    for _, num := range nums1 {
+        set[num] = true
+    }
+    
+    // 创建结果数组
+    var result []int
+    
+    // 遍历 nums2，检查元素是否在哈希表中存在
+    for _, num := range nums2 {
+        if set[num] {
+            result = append(result, num)
+            delete(set, num) // 从哈希表中删除该元素，确保交集中的元素唯一
+        }
+    }
+    
+    return result
+}
+```
