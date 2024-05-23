@@ -443,3 +443,37 @@ func step(n int) int {
 	return sum
 }
 ```
+##  1.两数之和
+### 题目描述：
+给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.使用哈希表(map)来存储数组中每个元素的值和它的下标。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.遍历数组,对于每个元素 nums[i]:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1: 计算 complement = target - nums[i],在哈希表中查找是否存在 complement。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2: 如果存在,并且它的下标不等于当前元素的下标 i,则找到了目标和,返回两个元素的下标。    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3:如果不存在,将当前元素的值和下标存入哈希表。   
+### 代码实现
+```
+func twoSum(nums []int, target int) []int {
+    // 创建哈希表
+    numMap := make(map[int]int)
+    
+    // 遍历数组
+    for i, num := range nums {
+        // 计算 complement
+        complement := target - num
+        
+        // 在哈希表中查找 complement
+        if j, ok := numMap[complement]; ok && j != i {
+            // 找到目标和,返回两个元素的下标
+            return []int{j, i}
+        }
+        
+        // 将当前元素的值和下标存入哈希表
+        numMap[num] = i
+    }
+    
+    // 没有找到目标和,返回空切片
+    return []int{}
+}
+```
