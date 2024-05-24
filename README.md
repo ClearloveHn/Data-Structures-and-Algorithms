@@ -480,3 +480,70 @@ func twoSum(nums []int, target int) []int {
     return []int{}
 }
 ```
+# 2024/5/24
+## 454.四数相加II 
+### 题目描述：
+给你四个整数数组 nums1、nums2、nums3 和 nums4 ，数组长度都是 n ，请你计算有多少个元组 (i, j, k, l) 能满足：0 <= i, j, k, l < n , nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.将问题转化为两数之和的问题。我们可以将 A 和 B 的所有元素的和存储在一个哈希表中,然后再遍历 C 和 D 中的所有元素,看看它们的和的相反数是否存在于哈希表中。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.创建一个哈希表 sumMap,用于存储 A 和 B 中元素的和以及该和出现的次数。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.遍历 A 和 B 中的所有元素,对于每一对元素 (A[i], B[j]),计算它们的和 sum = A[i] + B[j],然后在哈希表中将该和的计数加 1。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.遍历 C 和 D 中的所有元素,对于每一对元素 (C[k], D[l]),计算它们的和的相反数complement = -(C[k] + D[l]),然后在哈希表中查找 complement 出现的次数,将该次数加到结果中。  
+### 代码实现
+```
+func fourSumCount(nums1 []int, nums2 []int, nums3 []int, nums4 []int) int {
+     
+     // 创建一个哈希表 sumMap,用于存储 A 和 B 中元素的和以及该和出现的次数。
+      sumMap := make(map[int]int)
+      count := 0
+
+     // 计算 A 和 B 中元素的和,并存储到哈希表中
+      for _, a := range nums1 {
+        for _, b := range nums2 {
+            sumMap[a+b]++
+         }
+      }
+
+    // 计算 C 和 D 中元素的和的相反数,在哈希表中查找是否存在
+     for _, c := range nums3 {
+        for _, d := range nums4 {
+            count += sumMap[-c-d]
+        }
+    }
+
+    return count
+}
+```
+## 383. 赎金信  
+### 题目描述
+给你两个字符串：ransomNote 和 magazine ，判断 ransomNote 能不能由 magazine 里面的字符构成。如果可以，返回 true ；否则返回 false 。magazine 中的每个字符只能在 ransomNote 中使用一次。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.首先,我们可以使用哈希表(map)来统计 magazine 中每个字符出现的次数。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.然后,我们遍历 ransomNote 中的每个字符,在哈希表中查找该字符出现的次数:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1 如果该字符在哈希表中出现的次数大于0,说明 magazine 中有足够的字符可以构成 ransomNote,我们将该字符在哈希表中的次数减1。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2 如果该字符在哈希表中出现的次数等于0或者不存在,说明 magazine 中没有足够的字符构成 ransomNote,直接返回 false。  
+### 代码实现
+```
+func canConstruct(ransomNote string, magazine string) bool {
+    // 创建哈希表,统计 magazine 中每个字符出现的次数
+    charCount := make(map[rune]int)
+    for _, char := range magazine {
+        charCount[char]++
+    }
+
+    // 遍历 ransomNote 中的每个字符
+    for _, char := range ransomNote {
+        // 在哈希表中查找该字符出现的次数
+        count, ok := charCount[char]
+        if !ok || count == 0 {
+            // 如果该字符在哈希表中不存在或次数为0,说明 magazine 中字符不足
+            return false
+        }
+        // 将该字符在哈希表中的次数减1
+        charCount[char]--
+    }
+
+    // 遍历完 ransomNote 的所有字符,说明 ransomNote 可以由 magazine 构成
+    return true
+}
+```
