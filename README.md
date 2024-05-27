@@ -547,3 +547,102 @@ func canConstruct(ransomNote string, magazine string) bool {
     return true
 }
 ```
+# 2024/5/27
+## 15. 三数之和
+### 题目描述
+给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请你返回所有和为 0 且不重复的三元组。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.数组排序。   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.然后,我们从数组的第一个元素开始遍历,直到倒数第三个元素。对于每个元素 nums[i],我们检查是否与前一个元素相同,如果相同,则跳过该元素,以避免产生重复的三元组。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.接下来,我们使用双指针方法在子数组 nums[i+1:] 中查找两个数,使得它们的和等于 -nums[i]。定义左指针 left 指向子数组的开头,右指针 right 指向子数组的结尾。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.在循环中,我们计算三个数的和 sum := nums[i] + nums[left] + nums[right]。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1 如果 sum == 0,说明找到了一组满足条件的三元组,将其加入结果列表。然后,我们将左指针右移,右指针左移,并跳过重复的元素。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2 如果 sum < 0,说明当前和太小,我们将左指针右移。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3 如果 sum > 0,说明当前和太大,我们将右指针左移。  
+### 代码实现
+```
+func threeSum(nums []int) [][]int {
+    var result [][]int
+    sort.Ints(nums)
+    
+    for i := 0; i < len(nums)-2; i++ {
+        if i > 0 && nums[i] == nums[i-1] {
+            continue // 跳过重复元素
+        }
+        
+        left, right := i+1, len(nums)-1
+        for left < right {
+            sum := nums[i] + nums[left] + nums[right]
+            if sum == 0 {
+                result = append(result, []int{nums[i], nums[left], nums[right]})
+                left++
+                right--
+                for left < right && nums[left] == nums[left-1] {
+                    left++ // 跳过重复元素
+                }
+                for left < right && nums[right] == nums[right+1] {
+                    right-- // 跳过重复元素
+                }
+            } else if sum < 0 {
+                left++
+            } else {
+                right--
+            }
+        }
+    }
+    
+    return result
+}
+```
+## 18. 四数之和  
+### 题目描述
+给你一个由 n 个整数组成的数组 nums ，和一个目标值 target 。请你找出并返回满足下述全部条件且不重复的四元组 [nums[a], nums[b], nums[c], nums[d]] (若两个四元组元素一一对应，则认为两个四元组重复)。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.数组排序。   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.然后,我们使用两个嵌套循环来固定前两个数。外层循环固定第一个数 nums[i],内层循环固定第二个数 nums[j]。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.对于固定的前两个数 nums[i] 和 nums[j],我们将问题转化为在子数组 nums[j+1:] 中寻找两个数,使得它们的和等于 target - nums[i] - nums[j]。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.接下来,我们使用双指针方法在子数组中查找这两个数。定义左指针 left 指向子数组的开头(即 j+1),右指针 right 指向子数组的结尾。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1 如果 nums[left] + nums[right] == target - nums[i] - nums[j],那么我们找到了一组满足条件的四元组,将其加入结果列表。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2 如果 nums[left] + nums[right] < target - nums[i] - nums[j],说明当前和太小,我们将左指针右移。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3 如果 nums[left] + nums[right] > target - nums[i] - nums[j],说明当前和太大,我们将右指针左移。  
+### 代码实现
+```
+func fourSum(nums []int, target int) [][]int {
+    var result [][]int
+    sort.Ints(nums)
+    
+    for i := 0; i < len(nums)-3; i++ {
+        if i > 0 && nums[i] == nums[i-1] {
+            continue // 跳过重复元素
+        }
+        
+        for j := i + 1; j < len(nums)-2; j++ {
+            if j > i+1 && nums[j] == nums[j-1] {
+                continue // 跳过重复元素
+            }
+            
+            left, right := j+1, len(nums)-1
+            for left < right {
+                sum := nums[i] + nums[j] + nums[left] + nums[right]
+                if sum == target {
+                    result = append(result, []int{nums[i], nums[j], nums[left], nums[right]})
+                    left++
+                    right--
+                    for left < right && nums[left] == nums[left-1] {
+                        left++ // 跳过重复元素
+                    }
+                    for left < right && nums[right] == nums[right+1] {
+                        right-- // 跳过重复元素
+                    }
+                } else if sum < target {
+                    left++
+                } else {
+                    right--
+                }
+            }
+        }
+    }
+    
+    return result
+}
+```
