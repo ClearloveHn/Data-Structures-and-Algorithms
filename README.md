@@ -708,3 +708,28 @@ func reverse(s []byte) {
     }
 }
 ```
+## 151. 反转字符串中的单词
+### 题目描述
+给你一个字符串 s ，请你反转字符串中 单词 的顺序。 输入：s = "the sky is blue"  输出："blue is sky the"
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.首先,我们需要去除字符串首尾的空格,并将字符串按空格分割成单词数组。   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.然后,我们反转整个单词数组,使单词的顺序颠倒。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.最后,我们将反转后的单词数组拼接成一个字符串,单词之间用空格分隔,并返回结果。  
+### 代码实现
+```
+func reverseWords(s string) string {
+    // 去除首尾空格并分割字符串为单词数组
+    words := strings.Fields(s)
+    
+    // 反转单词数组
+    left, right := 0, len(words)-1
+    for left < right {
+        words[left], words[right] = words[right], words[left]
+        left++
+        right--
+    }
+    
+    // 拼接单词数组为字符串并返回
+    return strings.Join(words, " ")
+}
+```
