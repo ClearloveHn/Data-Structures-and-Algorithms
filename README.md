@@ -671,3 +671,39 @@ func reverseString(s []byte)  {
 ```
 ## 541. 反转字符串II
 ### 题目描述
+给定一个字符串 s 和一个整数 k，从字符串开头算起，每计数至 2k 个字符，就反转这 2k 字符中的前 k 个字符。  如果剩余字符少于 k 个，则将剩余字符全部反转。  如果剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符，其余字符保持原样。  
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.我们可以将字符串分割成多个长度为 2k 的子串,对于每个子串,我们反转其前 k 个字符。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.对于剩余的字符,如果少于 k 个,则将剩余字符全部反转;如果小于 2k 但大于或等于 k 个,则反转前 k 个字符,其余字符保持原样。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.我们可以使用双指针的方法来反转字符串的一部分,与反转整个字符串的方法类似。  
+### 代码实现
+```
+func reverseStr(s string, k int) string {
+   
+   // 我们首先将字符串 s 转换为字节数组 bytes,方便我们对字符进行修改。
+   bytes := []byte(s)
+   length := len(bytes)
+
+   for i:=0; i < length; i += 2 * k {
+      if i + k <= length {
+        // 如果子串长度大于等于 k,则反转前 k 个字符,使用 reverse(bytes[i:i+k])。
+         reverse(bytes[i:i+k])
+      } else {
+        // 如果子串长度小于 k,则将剩余字符全部反转,使用 reverse(bytes[i:])。
+         reverse(bytes[i:])
+      }
+    }
+
+    return string(bytes)
+}
+
+func reverse(s []byte) {
+    left, right := 0, len(s)-1
+    
+    for left < right {
+        s[left], s[right] = s[right], s[left]
+        left++
+        right--
+    }
+}
+```
