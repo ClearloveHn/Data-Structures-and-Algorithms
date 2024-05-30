@@ -733,3 +733,141 @@ func reverseWords(s string) string {
     return strings.Join(words, " ")
 }
 ```
+# 2024/5/30
+## 232.用栈实现队列
+### 题目描述
+请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：  
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.我们可以使用两个栈来模拟队列的行为,一个栈用于输入,另一个栈用于输出。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.入队操作:&nbsp;将元素压入输入栈。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.出队操作:&nbsp;如果输出栈为空,则将输入栈中的所有元素弹出并压入输出栈。 从输出栈中弹出栈顶元素。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.获取队首元素操作:&nbsp;如果输出栈为空,则将输入栈中的所有元素弹出并压入输出栈。 返回输出栈的栈顶元素。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.判断队列是否为空:&nbsp;如果输入栈和输出栈都为空,则队列为空。  
+### 代码实现
+```
+type MyQueue struct {
+     inputStack  []int
+     outputStack []int
+}
+
+
+func Constructor() MyQueue {
+     return MyQueue {
+        inputStack: []int{},
+        outputStack: []int{},
+     }
+}
+
+
+func (this *MyQueue) Push(x int)  {
+     this.inputStack = append(this.inputStack,x)
+}
+
+// 弹出开头元素
+func (this *MyQueue) Pop() int {
+    // 第一部分: 如果输出栈为空
+    if len(this.outputStack) == 0 {
+
+        // 将输入栈中的所有元素弹出并压入输出栈
+        for len(this.inputStack) > 0 {
+            top := this.inputStack[len(this.inputStack)-1]
+            this.inputStack = this.inputStack[:len(this.inputStack)-1]
+            this.outputStack = append(this.outputStack, top)
+        }
+    }
+
+    if len(this.outputStack) == 0 {
+        return 0
+    }
+
+     // 第三部分: 从输出栈中弹出栈顶元素并返回
+    top := this.outputStack[len(this.outputStack)-1]
+    this.outputStack = this.outputStack[:len(this.outputStack)-1]
+    return top
+}
+
+// 返回队列开头的元素
+func (this *MyQueue) Peek() int {
+   if len(this.outputStack) == 0 {
+        for len(this.inputStack) > 0 {
+            top := this.inputStack[len(this.inputStack)-1]
+            this.inputStack = this.inputStack[:len(this.inputStack)-1]
+            this.outputStack = append(this.outputStack, top)
+        }
+    }
+
+    if len(this.outputStack) == 0 {
+        return 0
+    }
+
+    return this.outputStack[len(this.outputStack) - 1]
+}
+
+
+func (this *MyQueue) Empty() bool {
+   return len(this.inputStack) == 0 && len(this.outputStack) == 0
+}
+
+```
+## 225. 用队列实现栈 
+### 题目描述
+请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部四种操作（push、top、pop 和 empty）。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.我们可以使用两个队列来实现栈。一个队列作为主队列，用于存储栈中的元素；另一个队列作为辅助队列，用于在入栈操作时临时存储元素。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.入栈操作:&nbsp;将元素放入辅助队列。将主队列中的所有元素依次出队并放入辅助队列。交换主队列和辅助队列的角色。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.出栈操作：&nbsp;直接从主队列中出队元素。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.获取栈顶元素操作：&nbsp;直接获取主队列的队首元素。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.判断栈是否为空:&nbsp;判断主队列是否为空。  
+### 代码实现
+```
+type MyStack struct {
+    queue1 []int
+    queue2 []int
+}
+
+
+func Constructor() MyStack {
+    return MyStack {
+        queue1:[]int{},
+        queue2:[]int{},
+    }
+}
+
+// 将元素 x 压入栈顶
+func (this *MyStack) Push(x int)  {
+    // 第一步: 将新元素放入辅助队列 queue2
+    this.queue2 = append(this.queue2, x)
+
+    // 将主队列 queue1 中的所有元素依次出队并放入辅助队列 queue2
+    for len(this.queue1) > 0 {
+        this.queue2 = append(this.queue2,this.queue1[0])
+        this.queue1 = this.queue1[1:]
+    }
+
+    this.queue1, this.queue2 = this.queue2, this.queue1
+}
+
+// 移除并返回栈顶元素
+func (this *MyStack) Pop() int {
+    if len(this.queue1) == 0 {
+        return 0
+    }
+
+    x := this.queue1[0]
+    this.queue1 = this.queue1[1:]
+    return x
+}
+
+func (this *MyStack) Top() int {
+    if len(this.queue1) == 0 {
+        return 0
+    }
+
+    return this.queue1[0]
+}
+
+func (this *MyStack) Empty() bool {
+    return len(this.queue1) == 0
+}
+
+```
