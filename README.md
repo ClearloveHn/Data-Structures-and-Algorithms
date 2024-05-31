@@ -871,3 +871,31 @@ func (this *MyStack) Empty() bool {
 }
 
 ```
+# 2024/5/31
+## 20. 有效的括号 
+### 题目描述
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。    有效字符串需满足：左括号必须用相同类型的右括号闭合。左括号必须以正确的顺序闭合。每个右括号都有一个对应的相同类型的左括号。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们可以使用栈来解决这个问题。遍历字符串,遇到左括号就将其压入栈中,遇到右括号就与栈顶元素进行匹配。如果匹配成功,就将栈顶元素弹出;如果匹配失败或者栈为空,说明字符串无效。最后,如果栈为空,说明所有的左括号都被正确地闭合,字符串有效;否则,字符串无效。
+### 代码实现
+```
+func isValid(s string) bool {
+    stack := make([]rune, 0)
+    for _, char := range s {
+        if char == '(' || char == '{' || char == '[' {
+            stack = append(stack, char)
+        } else {
+            if len(stack) == 0 {
+                return false
+            }
+            top := stack[len(stack)-1]
+            if (char == ')' && top == '(') || (char == '}' && top == '{') || (char == ']' && top == '[') {
+                stack = stack[:len(stack)-1]
+            } else {
+                return false
+            }
+        }
+    }
+    return len(stack) == 0
+}
+```
