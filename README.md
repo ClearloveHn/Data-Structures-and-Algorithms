@@ -899,3 +899,59 @@ func isValid(s string) bool {
     return len(stack) == 0
 }
 ```
+# 2024/6/4
+## 1047. 删除字符串中的所有相邻重复项 
+### 题目描述
+给出由小写字母组成的字符串 S，重复项删除操作会选择两个相邻且相同的字母，并删除它们。在 S 上反复执行重复项删除操作，直到无法继续删除。在完成所有重复项删除操作后返回最终的字符串。答案保证唯一。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;遍历字符串,将字符依次压入栈中。每次压入字符前,都与栈顶字符进行比较,如果相同,则将栈顶字符弹出,如果不同,则将当前字符压入栈中。这样,相邻的重复字符就会被删除。最后,栈中剩下的字符就是删除所有相邻重复项后的最终字符串。
+### 代码实现
+```
+func removeDuplicates(S string) string {
+    stack := make([]byte, 0)
+
+    for i := 0; i <= len(S) - 1; i++ {
+        if len(stack) == 0 || S[i] != stack[len(stack)-1] {
+            stack = append(stack, S[i])
+        } else {
+            stack = stack[:len(stack)-1]
+        }
+    }
+
+    return string(stack)
+}
+```
+## 150. 逆波兰表达式求值 
+### 题目描述
+给你一个字符串数组 tokens ，表示一个根据逆波兰表示法表示的算术表达式。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.创建一个栈，用于存储操作数  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.遍历逆波兰表达式中的每个元素：如果当前元素是一个整数，将其压入栈中。如果当前元素是一个运算符（+、-、*、/），从栈中弹出两个操作数，执行相应的运算，并将运算结果压入栈中。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.遍历完所有元素后，栈中剩下的唯一一个元素即为逆波兰表达式的值。  
+### 代码实现
+```
+func evalRPN(tokens []string) int {
+     stack := make([]int,0)
+
+     for _,token := range tokens {
+        if num, err := strconv.Atoi(token); err == nil {
+           stack = append(stack,num)
+        } else {
+           num2, num1 := stack[len(stack)-1], stack[len(stack)-2]
+            stack = stack[:len(stack)-2]
+
+            switch token {
+            case "+":
+                stack = append(stack, num1+num2)
+            case "-":
+                stack = append(stack, num1-num2)
+            case "*":
+                stack = append(stack, num1*num2)
+            case "/":
+                stack = append(stack, num1/num2)
+            }
+        }
+     }
+     return stack[0]
+}
+```
