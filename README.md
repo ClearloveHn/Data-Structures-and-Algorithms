@@ -955,3 +955,58 @@ func evalRPN(tokens []string) int {
      return stack[0]
 }
 ```
+# 2024/6/11
+## 144.二叉树的前序遍历
+### 题目描述
+给你二叉树的根节点 root ，返回它节点值的前序遍历。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.访问根节点,将根节点的值加入结果数组。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.如果左子树不为空,递归地遍历左子树。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.如果右子树不为空,递归地遍历右子树。  
+### 代码实现
+```
+func preorderTraversal(root *TreeNode) []int {
+     result := []int{}
+
+     var preorder func(node *TreeNode)
+
+     preorder = func(node *TreeNode) {
+        if node == nil {
+           return
+        }
+
+        result = append(result, node.Val)
+        preorder(node.Left)
+        preorder(node.Right)
+     }
+
+     preorder(root)
+     return result
+}
+```
+## 94.二叉树的中序遍历
+### 题目描述
+给定一个二叉树的根节点 root ，返回 它的 中序 遍历 。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.如果左子树不为空,递归地遍历左子树。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.访问根节点,将根节点的值加入结果数组。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.如果右子树不为空,递归地遍历右子树。  
+### 代码实现
+```
+func inorderTraversal(root *TreeNode) []int {
+    result := []int{}
+    var inorder func(node *TreeNode)
+
+    inorder = func(node *TreeNode) {
+        if node == nil {
+            return
+        }
+        inorder(node.Left)
+        result = append(result, node.Val)
+        inorder(node.Right)
+    }
+
+    inorder(root)
+    return result
+}
+```
