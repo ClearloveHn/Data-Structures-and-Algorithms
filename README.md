@@ -1072,5 +1072,28 @@ func invertTree(root *TreeNode) *TreeNode {
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.4 递归地判断左子树的左子树与右子树的右子树是否镜像对称,以及左子树的右子树与右子树的左子树是否镜像对称。  
 ### 代码实现
 ```
+func isSymmetric(root *TreeNode) bool {
+     if root == nil {
+        return true
+     }
 
+     var isMirror func(left,right *TreeNode) bool
+     isMirror = func(left,right *TreeNode) bool {
+        if left == nil && right == nil {
+            return true
+        }
+
+        if left == nil || right == nil {
+            return false
+        }
+
+        if left.Val != right.Val {
+            return false
+        }
+
+       return isMirror(left.Left,right.Right) && isMirror(right.Left,left.Right)
+     }
+
+     return isMirror(root.Left,root.Right)
+}
 ```
