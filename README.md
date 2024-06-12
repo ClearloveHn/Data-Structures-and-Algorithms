@@ -1010,3 +1010,67 @@ func inorderTraversal(root *TreeNode) []int {
     return result
 }
 ```
+# 2024/6/12
+## 145.二叉树的后序遍历
+### 题目描述
+给你一棵二叉树的根节点 root ，返回其节点值的 后序遍历 。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.如果左子树不为空,递归地遍历左子树。   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.如果右子树不为空,递归地遍历右子树。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.访问根节点,将根节点的值加入结果数组。   
+### 代码实现
+```
+func postorderTraversal(root *TreeNode) []int {
+     result := []int{}
+
+     var postorder func(node *TreeNode)
+     postorder = func(node *TreeNode) {
+        if node == nil {
+            return
+        }
+
+        postorder(node.Left)
+        postorder(node.Right)
+        result = append(result,node.Val)
+     }
+     postorder(root)
+     return result
+}
+```
+## 226.翻转二叉树
+### 题目描述
+给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.如果当前节点为空,直接返回。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.交换当前节点的左子树和右子树。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.递归地翻转当前节点的左子树。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.递归地翻转当前节点的右子树。  
+### 代码实现
+```
+func invertTree(root *TreeNode) *TreeNode {
+     if root == nil {
+        return nil
+     }
+
+     root.Left , root.Right = root.Right,root.Left
+
+     invertTree(root.Left)
+     invertTree(root.Right)
+
+     return root
+}
+```
+## 101.对称二叉树
+### 题目描述
+给你一个二叉树的根节点 root ， 检查它是否轴对称。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.如果根节点为空,则二叉树是对称的。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.如果根节点不为空,则递归地判断左子树和右子树是否镜像对称。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1 如果左子树和右子树都为空,则它们是镜像对称的。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2 如果左子树和右子树只有一个为空,则它们不是镜像对称的。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3 如果左子树和右子树的根节点值不相等,则它们不是镜像对称的。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.4 递归地判断左子树的左子树与右子树的右子树是否镜像对称,以及左子树的右子树与右子树的左子树是否镜像对称。  
+### 代码实现
+```
+
+```
