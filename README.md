@@ -1097,3 +1097,78 @@ func isSymmetric(root *TreeNode) bool {
      return isMirror(root.Left,root.Right)
 }
 ```
+# 2024/6/17
+## 104.二叉树的最大深度
+### 题目描述
+给定一个二叉树 root ，返回其最大深度
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;求二叉树的最大深度可以使用递归的方法。对于每个节点,其最大深度等于左子树的最大深度和右子树的最大深度中的较大值加1。  
+### 代码实现
+```
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func maxDepth(root *TreeNode) int {
+     if root == nil {
+        return 0
+     }
+
+     leftDepth := maxDepth(root.Left)
+     rightDepth := maxDepth(root.Right)
+
+     if leftDepth < rightDepth {
+        return rightDepth + 1
+     } else {
+        return leftDepth + 1
+     }
+}
+```
+## 111.二叉树的最小深度
+### 题目描述
+给定一个二叉树，找出其最小深度。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.求二叉树的最小深度可以使用递归的方法。对于每个节点,我们需要分别计算其左子树和右子树的最小深度,然后根据不同的情况返回相应的值。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1 如果当前节点为空,则返回深度0。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.2 如果当前节点的左子树为空,则返回右子树的最小深度加1。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.3 如果当前节点的右子树为空,则返回左子树的最小深度加1。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.4 如果当前节点的左子树和右子树都不为空,则返回左子树和右子树最小深度的较小值加1。  
+### 代码实现
+```
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func minDepth(root *TreeNode) int {
+    if root == nil {
+        return 0
+     }
+
+    if root.Left == nil {
+        return minDepth(root.Right) + 1
+     }
+
+    if root.Right == nil {
+        return minDepth(root.Left) + 1
+    }
+
+    leftDepth := minDepth(root.Left)
+    rightDepth := minDepth(root.Right)
+    
+    if leftDepth < rightDepth {
+        return leftDepth + 1
+    } else {
+        return rightDepth + 1
+    }
+
+
+}
+```
