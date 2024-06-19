@@ -1168,7 +1168,110 @@ func minDepth(root *TreeNode) int {
     } else {
         return rightDepth + 1
     }
+}
+```
+# 2024/6/19
+## 110.平衡二叉树 
+### 题目描述
+给定一个二叉树，判断它是否是平衡二叉树。当且仅当每个节点的左右两个子树的高度差的绝对值不超过 1。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 如果当前节点为空,说明是平衡的,返回高度 0。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 递归计算当前节点的左子树的高度 leftHeight。如果左子树不平衡,直接返回 -1,表示整棵树不平衡。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 递归计算当前节点的右子树的高度 rightHeight。如果右子树不平衡,直接返回 -1,表示整棵树不平衡。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 判断当前节点的左右子树高度差的绝对值是否不超过 1。如果超过 1,返回 -1,表示整棵树不平衡。 如果不超过 1,返回当前节点的高度,即左右子树高度的较大值加 1。  
+### 代码实现
+```
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isBalanced(root *TreeNode) bool {
+     return height(root) != -1
+}
+
+func height(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+
+    leftHeight := height(root.Left)
+    if leftHeight == -1 {
+        return -1
+    }
+
+    rightHeight := height(root.Right)
+    if rightHeight == -1 {
+        return -1
+    }
+
+    if abs(leftHeight - rightHeight) > 1 {
+        return -1
+    }
+
+     return max(leftHeight, rightHeight) + 1
 
 
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+func abs(a int) int {
+    if a < 0 {
+        return -a
+    }
+    return a
+}
+```
+## 257.二叉树的所有路径 
+### 题目描述
+给你一个二叉树的根节点 root ，按 任意顺序 ，返回所有从根节点到叶子节点的路径。
+### 解题思路:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 如果当前节点是叶子节点,说明我们找到了一条从根节点到叶子节点的路径,将其添加到结果列表中。  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 如果当前节点不是叶子节点,我们分别递归地遍历其左子树和右子树,并将当前节点的值添加到路径中。  
+### 代码实现
+```
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func binaryTreePaths(root *TreeNode) []string {
+    var result []string
+    
+    var dfs func(node *TreeNode, path string)
+    dfs = func(node *TreeNode, path string) {
+        if node == nil {
+            return
+        }
+        
+        if path == "" {
+            path = strconv.Itoa(node.Val)
+        } else {
+            path += "->" + strconv.Itoa(node.Val)
+        }
+        
+        if node.Left == nil && node.Right == nil {
+            result = append(result, path)
+            return
+        }
+        
+        dfs(node.Left, path)
+        dfs(node.Right, path)
+    }
+    
+    dfs(root, "")
+    return result
 }
 ```
